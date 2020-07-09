@@ -10,7 +10,6 @@ end
 
 function love.draw()
   love.graphics.setBackgroundColor(0, 0, 0, 1)
-  love.graphics.setColor(0, 1, 1, 1)
   for i,r in ipairs(grid) do
     for j,c in ipairs(r) do
         c.draw()

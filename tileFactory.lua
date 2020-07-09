@@ -1,16 +1,13 @@
 
 tileTypes = { empty=1, corner=2, corridor=3, threeWay=4, fourWay=5 }
-
--- tileTypes = {
---   empty=1, topleft=2, topright=3,
---   bottomleft=4, bottomright=5, left=6,
---   top=7, right=8, bottom=9,
--- }
+pathWidthRatio = 0.5
 
 function createTile(row, col, width)
   local tile = {}
   tile.rotation = love.math.random(0, 3) * math.pi / 2
-  tile.type = love.math.random(1, 5)
+  -- TODO: enable all types here
+  -- tile.type = love.math.random(1, 5)
+  tile.type = love.math.random(2, 3)
   tile.draw = getRenderer(tile.type, row, col, width, tile.rotation)
   return tile
 end
@@ -25,24 +22,16 @@ function getRenderer(tileType, row, col, width, rotation)
   end
 end
 
--- function getRotation(cell)
---   if cell.placement == tileTypes.top or cell.placement == tileTypes.topright then
---     return math.pi / 2
---   elseif cell.placement == tileTypes.right or cell.placement == tileTypes.bottomright then
---     return math.pi
---   elseif cell.placement == tileTypes.bottom or cell.placement == tileTypes.bottomleft then
---     return 3 * math.pi / 2
---   else
---     return 0
---   end
--- end
-
 function createCornerRenderer(row, col, width, rotation)
   return function ()
     local lineWidth = 3
     local lineOffset = lineWidth / 2
     local center = width / 2
     local startPoint = { x = (col - 1) * width, y = (row - 1) * width }
+    local leftLineX = center - center * pathWidthRatio + lineOffset
+    local topLineY = leftLineX
+    local rightLineX = center + center * pathWidthRatio - lineOffset
+    local bottomLineY = rightLineX
     love.graphics.setLineWidth(lineWidth)
 
     love.graphics.translate(startPoint.x, startPoint.y)
@@ -50,9 +39,17 @@ function createCornerRenderer(row, col, width, rotation)
     love.graphics.rotate(rotation)
     love.graphics.translate(-center, -center)
 
-    love.graphics.line(center, lineOffset, width, lineOffset)
-    love.graphics.line(lineOffset, center, lineOffset, width)
-    love.graphics.arc("line", "open", center + lineOffset, center + lineOffset, center, math.pi, 3 * math.pi / 2)
+    love.graphics.setColor(0, 1, 1, 1)
+    love.graphics.line(leftLineX, topLineY, width, topLineY)
+    love.graphics.line(leftLineX, topLineY, leftLineX, width)
+    -- love.graphics.arc("line", "open", center + lineOffset, center + lineOffset, center, math.pi, 3 * math.pi / 2)
+
+    love.graphics.line(rightLineX, bottomLineY, width, bottomLineY)
+    love.graphics.line(rightLineX, bottomLineY, rightLineX, width)
+    -- love.graphics.arc("line", "open" x, y, radius, math.pi, 3 * math.pi / 2)
+
+    love.graphics.setColor(1, 1, 0, 1)
+    love.graphics.rectangle("line", 0, 0, width, width)
 
     love.graphics.translate(center, center)
     love.graphics.rotate(-rotation)
@@ -67,6 +64,8 @@ function createCorridorRenderer(row, col, width, rotation)
     local lineOffset = lineWidth / 2
     local center = width / 2
     local startPoint = { x = (col - 1) * width, y = (row - 1) * width }
+    local leftLineX = center - center * pathWidthRatio + lineOffset
+    local rightLineX = center + center * pathWidthRatio - lineOffset
     love.graphics.setLineWidth(lineWidth)
 
     love.graphics.translate(startPoint.x, startPoint.y)
@@ -74,40 +73,17 @@ function createCorridorRenderer(row, col, width, rotation)
     love.graphics.rotate(rotation)
     love.graphics.translate(-center, -center)
 
-    love.graphics.line(lineOffset, 0, lineOffset, width)
 
+    love.graphics.setColor(0, 1, 1, 1)
+    love.graphics.line(leftLineX, 0, leftLineX, width)
+    love.graphics.line(rightLineX, 0, rightLineX, width)
+
+    love.graphics.setLineWidth(1)
+    love.graphics.setColor(1, 1, 0, 1)
+    love.graphics.rectangle("line", 0, 0, width, width)
     love.graphics.translate(center, center)
     love.graphics.rotate(-rotation)
     love.graphics.translate(-center, -center)
     love.graphics.translate(-startPoint.x, -startPoint.y)
   end
 end
-
--- function drawcell(row, col, type, rotation)
---   if type == tileTypes.empty then
---     return
---   end
---   local lineWidth = 3
---   local lineOffset = lineWidth / 2
---   local center = cellWidth / 2
---   local startPoint = { x = (col - 1) * cellWidth, y = (row - 1) * cellWidth }
---   love.graphics.setLineWidth(lineWidth)
---
---   love.graphics.translate(startPoint.x, startPoint.y)
---   love.graphics.translate(center, center)
---   love.graphics.rotate(rotation)
---   love.graphics.translate(-center, -center)
---
---   if cell.placement == tileTypes.topright or cell.placement == tileTypes.topleft or cell.placement == tileTypes.bottomleft or cell.placement == tileTypes.bottomright then
---     love.graphics.line(center, lineOffset, cellWidth, lineOffset)
---     love.graphics.line(lineOffset, center, lineOffset, cellWidth)
---     love.graphics.arc("line", "open",center + lineOffset, center + lineOffset, center, math.pi, 3 * math.pi / 2)
---   else
---     love.graphics.line(lineOffset, 0, lineOffset, cellWidth)
---   end
---
---   love.graphics.translate(center, center)
---   love.graphics.rotate(-rotation)
---   love.graphics.translate(-center, -center)
---   love.graphics.translate(-startPoint.x, -startPoint.y)
--- end
