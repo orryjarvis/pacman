@@ -1,14 +1,15 @@
 
 tileTypes = { empty=1, corner=2, corridor=3, threeWay=4, fourWay=5 }
-lineWidth = 3
-pathWidthRatio = 0.5
+lineWidth = 2
+pathWidthRatio = 0.75
 
-function createTile(row, col, width)
+function createTile(type, row, col, width, rotDeg)
   local tile = {}
   local rendererMap = { function() end, createCornerRenderer, createCorridorRenderer, createThreeWayRenderer, createFourWayRenderer }
-  tile.rotation = love.math.random(0, 3) * math.pi / 2
-  tile.type = love.math.random(1, 5)
-  tile.draw = getRenderer(row, col, width, tile.rotation, rendererMap[tile.type])
+  local rotRad = rotDeg * math.pi / 180
+  tile.rotation = rotRad
+  tile.type = type
+  tile.draw = getRenderer(row, col, width, rotRad, rendererMap[type])
   return tile
 end
 
@@ -54,9 +55,6 @@ function createFourWayRenderer(harness)
   love.graphics.line(harness.width, harness.marginBottomRight, harness.marginBottomRight, harness.marginBottomRight)
   love.graphics.line(harness.marginBottomRight, harness.marginBottomRight, harness.marginBottomRight, harness.width)
   -- love.graphics.arc("line", "open" x, y, radius, math.pi, 3 * math.pi / 2)
-
-  love.graphics.setColor(1, 1, 0, 1)
-  love.graphics.rectangle("line", 0, 0, harness.width, harness.width)
 end
 
 function createThreeWayRenderer(harness)
@@ -70,9 +68,6 @@ function createThreeWayRenderer(harness)
   love.graphics.line(harness.width, harness.marginBottomRight, harness.marginBottomRight, harness.marginBottomRight)
   love.graphics.line(harness.marginBottomRight, harness.marginBottomRight, harness.marginBottomRight, harness.width)
   -- love.graphics.arc("line", "open" x, y, radius, math.pi, 3 * math.pi / 2)
-
-  love.graphics.setColor(1, 1, 0, 1)
-  love.graphics.rectangle("line", 0, 0, harness.width, harness.width)
 end
 
 function createCornerRenderer(harness)
@@ -83,16 +78,9 @@ function createCornerRenderer(harness)
   love.graphics.line(harness.marginBottomRight, harness.marginBottomRight, harness.width, harness.marginBottomRight)
   love.graphics.line(harness.marginBottomRight, harness.marginBottomRight, harness.marginBottomRight, harness.width)
   -- love.graphics.arc("line", "open" x, y, radius, math.pi, 3 * math.pi / 2)
-
-  love.graphics.setColor(1, 1, 0, 1)
-  love.graphics.rectangle("line", 0, 0, harness.width, harness.width)
 end
 
 function createCorridorRenderer(harness)
     love.graphics.line(harness.marginTopLeft, 0, harness.marginTopLeft, harness.width)
     love.graphics.line(harness.marginBottomRight, 0, harness.marginBottomRight, harness.width)
-
-    love.graphics.setLineWidth(1)
-    love.graphics.setColor(1, 1, 0, 1)
-    love.graphics.rectangle("line", 0, 0, harness.width, harness.width)
 end
