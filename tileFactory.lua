@@ -1,6 +1,6 @@
 
 tileType = { empty=1, corner=2, corridor=3, threeWay=4, fourWay=5 }
-wallType = { none=1, single=2, double=3 }
+wallType = { none=1, single=2, double=3, doubleFirstHalf=4, doubleSecondHalf=5 }
 lineWidth = 2
 pathWidthRatio = 0.75
 largeCornerRatio = 0.2
@@ -152,6 +152,10 @@ function renderCorner(harness)
     love.graphics.line(harness.marginTopLeft - harness.doubleLineGap + harness.largeCornerRadius, harness.marginTopLeft - harness.doubleLineGap, harness.width, harness.marginTopLeft - harness.doubleLineGap)
     love.graphics.line(harness.marginTopLeft - harness.doubleLineGap, harness.marginTopLeft - harness.doubleLineGap + harness.largeCornerRadius, harness.marginTopLeft - harness.doubleLineGap, harness.width)
     love.graphics.arc("line", "open", harness.marginTopLeft - harness.doubleLineGap + harness.largeCornerRadius, harness.marginTopLeft - harness.doubleLineGap + harness.largeCornerRadius, harness.largeCornerRadius, math.pi, 3 * math.pi / 2)
+  elseif (harness.wallTypes[1] == wallType.doubleFirstHalf) then
+    love.graphics.line(harness.marginTopLeft - harness.doubleLineGap, 0, harness.marginTopLeft - harness.doubleLineGap, harness.width)
+  elseif (harness.wallTypes[1] == wallType.doubleSecondHalf) then
+    love.graphics.line(0, harness.marginTopLeft - harness.doubleLineGap, harness.width, harness.marginTopLeft - harness.doubleLineGap)
   end
 
   if (harness.wallTypes[2] ~= wallType.none) then

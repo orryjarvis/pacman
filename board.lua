@@ -35,8 +35,8 @@ function createRow1(cellWidth)
   row[2]  = createTile(tileType.corridor, 1, 2,  cellWidth, 90, { wallType.double, wallType.single })
   row[3]  = createTile(tileType.threeWay, 1, 3,  cellWidth, 0,  { wallType.double, wallType.single, wallType.single })
   row[4]  = createTile(tileType.corridor, 1, 4,  cellWidth, 90, { wallType.double, wallType.single })
-  row[5]  = createTile(tileType.corner,   1, 5,  cellWidth, 90, { wallType.double, wallType.single })
-  row[6]  = createTile(tileType.corner,   1, 6,  cellWidth, 0,  { wallType.double, wallType.single })
+  row[5]  = createTile(tileType.corner,   1, 5,  cellWidth, 90, { wallType.doubleFirstHalf, wallType.single })
+  row[6]  = createTile(tileType.corner,   1, 6,  cellWidth, 0,  { wallType.doubleSecondHalf, wallType.single })
   row[7]  = createTile(tileType.corridor, 1, 7,  cellWidth, 90, { wallType.double, wallType.single })
   row[8]  = createTile(tileType.threeWay, 1, 8,  cellWidth, 0,  { wallType.double, wallType.single, wallType.single })
   row[9]  = createTile(tileType.corridor, 1, 9,  cellWidth, 90, { wallType.double, wallType.single })
@@ -167,7 +167,7 @@ end
 function createRow9(cellWidth)
   local row = {}
 
-  row[1]  = createTile(tileType.corner,   9, 1,  cellWidth, 270, { wallType.double, wallType.single })
+  row[1]  = createTile(tileType.corner,   9, 1,  cellWidth, 270, { wallType.doubleSecondHalf, wallType.single })
   row[2]  = createTile(tileType.corner,   9, 2,  cellWidth, 90,  { wallType.single, wallType.single })
   row[3]  = createTile(tileType.threeWay, 9, 3,  cellWidth, 270, { wallType.single, wallType.single, wallType.single })
   row[4]  = createTile(tileType.threeWay, 9, 4,  cellWidth, 0,   { wallType.single, wallType.single, wallType.single })
@@ -176,7 +176,7 @@ function createRow9(cellWidth)
   row[7]  = createTile(tileType.threeWay, 9, 7,  cellWidth, 0,   { wallType.single, wallType.single, wallType.single })
   row[8]  = createTile(tileType.threeWay, 9, 8,  cellWidth, 90,  { wallType.single, wallType.single, wallType.single })
   row[9]  = createTile(tileType.corner,   9, 9,  cellWidth, 0,   { wallType.single, wallType.single })
-  row[10] = createTile(tileType.corner,   9, 10, cellWidth, 180, { wallType.double, wallType.single })
+  row[10] = createTile(tileType.corner,   9, 10, cellWidth, 180, { wallType.doubleFirstHalf, wallType.single })
 
   return row
 end
@@ -184,7 +184,7 @@ end
 function createRow10(cellWidth)
   local row = {}
 
-  row[1]  = createTile(tileType.corner,   10, 1,  cellWidth, 0,   { wallType.double, wallType.single })
+  row[1]  = createTile(tileType.corner,   10, 1,  cellWidth, 0,   { wallType.doubleFirstHalf, wallType.single })
   row[2]  = createTile(tileType.threeWay, 10, 2,  cellWidth, 180, { wallType.single, wallType.single, wallType.single })
   row[3]  = createTile(tileType.corner,   10, 3,  cellWidth, 180, { wallType.single, wallType.single })
   row[4]  = createTile(tileType.corner,   10, 4,  cellWidth, 270, { wallType.single, wallType.single })
@@ -193,7 +193,7 @@ function createRow10(cellWidth)
   row[7]  = createTile(tileType.corner,   10, 7,  cellWidth, 180, { wallType.single, wallType.single })
   row[8]  = createTile(tileType.corner,   10, 8,  cellWidth, 270, { wallType.single, wallType.single })
   row[9]  = createTile(tileType.threeWay, 10, 9,  cellWidth, 180, { wallType.single, wallType.single, wallType.single })
-  row[10] = createTile(tileType.corner,   10, 10, cellWidth, 90,  { wallType.double, wallType.single })
+  row[10] = createTile(tileType.corner,   10, 10, cellWidth, 90,  { wallType.doubleSecondHalf, wallType.single })
 
   return row
 end
