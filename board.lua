@@ -18,3 +18,11 @@ function initializeBoard()
     table.insert(grid, row)
   end
 end
+
+function drawBoard()
+  for i,r in ipairs(grid) do
+    for j,c in ipairs(r) do
+        c.draw()
+    end
+  end
+end

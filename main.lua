@@ -1,18 +1,17 @@
 function love.load(arg)
   require('board')
+  require('player')
   initializeBoard()
+  initializePlayer()
 end
 
 function love.update(dt)
-  -- body...
+  updatePlayer(dt)
 end
 
 
 function love.draw()
   love.graphics.setBackgroundColor(0, 0, 0, 1)
-  for i,r in ipairs(grid) do
-    for j,c in ipairs(r) do
-        c.draw()
-    end
-  end
+  drawBoard()
+  drawPlayer()
 end
