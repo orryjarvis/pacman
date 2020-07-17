@@ -11,8 +11,10 @@ function initializePlayer()
   local collisionMargin = cellHalf - cellHalf * pathWidthRatio + lineWidth
   player.collisionSize = cellWidth - 2 * collisionMargin
   player.drawSize = player.collisionSize * playerToPathRatio
-  player.x = cellHalf
-  player.y = cellHalf
+  player.body = love.physics.newBody(world, cellHalf, cellHalf)
+  player.shape = love.physics.newCircleShape(player.collisionSize / 2)
+  player.fixture = love.physics.newFixture(player.body, player.shape)
+  world:setCallbacks(beginContact, endContact, preSolve, postSolve)
 end
 
 function updatePlayer(dt)
@@ -22,26 +24,26 @@ function updatePlayer(dt)
     nextAnimationState = player.animationState
   end
   local nextDt = math.fmod(player.dt + dt, lengthOfAnimationState)
-  if love.keyboard.isDown("w") and player.y > 0 then
-    player.y = player.y - player.speed * dt
+  if love.keyboard.isDown("w") and player.body:getY() > 0 then
+    player.body:setY(player.body:getY() - player.speed * dt)
     player.animationState = nextAnimationState
     player.dt = nextDt
     player.direction = 3
   end
-  if love.keyboard.isDown("a") and player.x > 0 then
-    player.x = player.x - player.speed * dt
+  if love.keyboard.isDown("a") and player.body:getX() > 0 then
+    player.body:setX(player.body:getX() - player.speed * dt)
     player.animationState = nextAnimationState
     player.dt = nextDt
     player.direction = 2
   end
-  if love.keyboard.isDown("s") and player.y < love.graphics.getHeight() then
-    player.y = player.y + player.speed * dt
+  if love.keyboard.isDown("s") and player.body:getY() < love.graphics.getHeight() then
+    player.body:setY(player.body:getY() + player.speed * dt)
     player.animationState = nextAnimationState
     player.dt = nextDt
     player.direction = 1
   end
-  if love.keyboard.isDown("d") and player.x < love.graphics.getWidth() then
-    player.x = player.x + player.speed * dt
+  if love.keyboard.isDown("d") and player.body:getX() < love.graphics.getWidth() then
+    player.body:setX(player.body:getX() + player.speed * dt)
     player.animationState = nextAnimationState
     player.dt = nextDt
     player.direction = 0
@@ -59,10 +61,19 @@ function drawPlayer()
   local halfOpen = open / 2
   love.graphics.setColor(1, 1, 0, 1)
   if player.animationState == 0 then
-  love.graphics.circle("fill", player.x, player.y, player.drawSize / 2)
+  love.graphics.circle("fill", player.body:getX(), player.body:getY(), player.drawSize / 2)
   elseif player.animationState == 1 or player.animationState == 3 then
-    love.graphics.arc("fill", "pie", player.x, player.y, player.drawSize / 2, facing + halfOpen, 2* math.pi + facing - halfOpen)
+    love.graphics.arc("fill", "pie", player.body:getX(), player.body:getY(), player.drawSize / 2, facing + halfOpen, 2* math.pi + facing - halfOpen)
   elseif player.animationState == 2 then
-   love.graphics.arc("fill", "pie", player.x, player.y, player.drawSize / 2, facing + open, 2* math.pi + facing - open)
+   love.graphics.arc("fill", "pie", player.body:getX(), player.body:getY(), player.drawSize / 2, facing + open, 2* math.pi + facing - open)
  end
 end
+--
+-- function beginContact(a, b, coll)
+--   player.grounded = true
+-- end
+--
+-- function endContact(a, b, coll)
+--   local x, y = player.body:getLinearVelocity()
+--   player.grounded = false
+-- end
