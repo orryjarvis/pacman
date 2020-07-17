@@ -23,7 +23,13 @@ end
 function drawBoard()
   for i,r in ipairs(grid) do
     for j,c in ipairs(r) do
-        c.draw()
+      c.draw()
+
+      love.graphics.setColor(1, 1, 1, 1)
+
+      for k,w in ipairs(c.walls) do
+        love.graphics.rectangle("fill", w.body:getX() - (w.width / 2), w.body:getY() - (w.height / 2), w.width, w.height)
+      end
     end
   end
 end

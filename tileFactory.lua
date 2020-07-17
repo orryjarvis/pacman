@@ -29,32 +29,74 @@ function createCornerWalls(world, harness, rotDeg)
 
   if (rotDeg == 0 or rotDeg == 90) then
     local wall = {}
-    wall.body = love.physics.newBody(world, harness.center, rectCenter)
-    wall.shape = love.physics.newRectangleShape(harness.width, harness.collisionMargin)
+    wall.width = harness.width
+    wall.height = harness.collisionMargin
+    wall.body = love.physics.newBody(world, harness.startPoint.x + harness.center, harness.startPoint.y + rectCenter)
+    wall.shape = love.physics.newRectangleShape(wall.width, wall.height)
     wall.fixture = love.physics.newFixture(wall.body, wall.shape)
     table.insert(walls, wall)
   end
 
   if (rotDeg == 180 or rotDeg == 270) then
     local wall = {}
-    wall.body = love.physics.newBody(world, harness.center, harness.width - rectCenter)
-    wall.shape = love.physics.newRectangleShape(harness.width, harness.collisionMargin)
+    wall.width = harness.width
+    wall.height = harness.collisionMargin
+    wall.body = love.physics.newBody(world, harness.startPoint.x + harness.center, harness.startPoint.y + harness.width - rectCenter)
+    wall.shape = love.physics.newRectangleShape(wall.width, wall.height)
     wall.fixture = love.physics.newFixture(wall.body, wall.shape)
     table.insert(walls, wall)
   end
 
   if (rotDeg == 0 or rotDeg == 270) then
     local wall = {}
-    wall.body = love.physics.newBody(world, rectCenter, harness.center)
-    wall.shape = love.physics.newRectangleShape(harness.collisionMargin, harness.width)
+    wall.width = harness.collisionMargin
+    wall.height = harness.width
+    wall.body = love.physics.newBody(world, harness.startPoint.x + rectCenter, harness.startPoint.y + harness.center)
+    wall.shape = love.physics.newRectangleShape(wall.width, wall.height)
     wall.fixture = love.physics.newFixture(wall.body, wall.shape)
     table.insert(walls, wall)
   end
 
   if (rotDeg == 90 or rotDeg == 180) then
     local wall = {}
-    wall.body = love.physics.newBody(world, harness.width - rectCenter, harness.center)
-    wall.shape = love.physics.newRectangleShape(harness.collisionMargin, harness.width)
+    wall.width = harness.collisionMargin
+    wall.height = harness.width
+    wall.body = love.physics.newBody(world, harness.startPoint.x + harness.width - rectCenter, harness.startPoint.y + harness.center)
+    wall.shape = love.physics.newRectangleShape(wall.width, wall.height)
+    wall.fixture = love.physics.newFixture(wall.body, wall.shape)
+    table.insert(walls, wall)
+  end
+
+  if (rotDeg == 0) then
+    local wall = {}
+    wall.width = harness.collisionMargin
+    wall.height = harness.collisionMargin
+    wall.body = love.physics.newBody(world, harness.startPoint.x + harness.width - rectCenter, harness.startPoint.y + harness.width - rectCenter)
+    wall.shape = love.physics.newRectangleShape(wall.width, wall.height)
+    wall.fixture = love.physics.newFixture(wall.body, wall.shape)
+    table.insert(walls, wall)
+  elseif (rotDeg == 90) then
+    local wall = {}
+    wall.width = harness.collisionMargin
+    wall.height = harness.collisionMargin
+    wall.body = love.physics.newBody(world, harness.startPoint.x + rectCenter, harness.startPoint.y + harness.width - rectCenter)
+    wall.shape = love.physics.newRectangleShape(wall.width, wall.height)
+    wall.fixture = love.physics.newFixture(wall.body, wall.shape)
+    table.insert(walls, wall)
+  elseif (rotDeg == 180) then
+    local wall = {}
+    wall.width = harness.collisionMargin
+    wall.height = harness.collisionMargin
+    wall.body = love.physics.newBody(world, harness.startPoint.x + rectCenter, harness.startPoint.y + rectCenter)
+    wall.shape = love.physics.newRectangleShape(wall.width, wall.height)
+    wall.fixture = love.physics.newFixture(wall.body, wall.shape)
+    table.insert(walls, wall)
+  else
+    local wall = {}
+    wall.width = harness.collisionMargin
+    wall.height = harness.collisionMargin
+    wall.body = love.physics.newBody(world, harness.startPoint.x + harness.width - rectCenter, harness.startPoint.y + rectCenter)
+    wall.shape = love.physics.newRectangleShape(wall.width, wall.height)
     wall.fixture = love.physics.newFixture(wall.body, wall.shape)
     table.insert(walls, wall)
   end
@@ -67,18 +109,28 @@ function createCorridorWalls(world, harness, rotDeg)
   local walls = { {}, {} }
 
   if (rotDeg == 0 or rotDeg == 180) then
-    walls[1].body = love.physics.newBody(world, rectCenter, harness.center)
-    walls[1].shape = love.physics.newRectangleShape(harness.collisionMargin, harness.width)
+    walls[1].width = harness.collisionMargin
+    walls[1].height = harness.width
+    walls[1].body = love.physics.newBody(world, harness.startPoint.x + rectCenter, harness.startPoint.y + harness.center)
+    walls[1].shape = love.physics.newRectangleShape(walls[1].width, walls[1].height)
     walls[1].fixture = love.physics.newFixture(walls[1].body, walls[1].shape)
-    walls[2].body = love.physics.newBody(world, harness.width - rectCenter, harness.center)
-    walls[2].shape = love.physics.newRectangleShape(harness.collisionMargin, harness.width)
+
+    walls[2].width = harness.collisionMargin
+    walls[2].height = harness.width
+    walls[2].body = love.physics.newBody(world, harness.startPoint.x + harness.width - rectCenter, harness.startPoint.y + harness.center)
+    walls[2].shape = love.physics.newRectangleShape(walls[2].width, walls[2].height)
     walls[2].fixture = love.physics.newFixture(walls[2].body, walls[2].shape)
   else
-    walls[1].body = love.physics.newBody(world, harness.center, rectCenter)
-    walls[1].shape = love.physics.newRectangleShape(harness.width, harness.collisionMargin)
+    walls[1].width = harness.width
+    walls[1].height = harness.collisionMargin
+    walls[1].body = love.physics.newBody(world, harness.startPoint.x + harness.center, harness.startPoint.y + rectCenter)
+    walls[1].shape = love.physics.newRectangleShape(walls[1].width, walls[1].height)
     walls[1].fixture = love.physics.newFixture(walls[1].body, walls[1].shape)
-    walls[2].body = love.physics.newBody(world, harness.center, harness.width - rectCenter)
-    walls[2].shape = love.physics.newRectangleShape(harness.width, harness.collisionMargin)
+
+    walls[2].width = harness.width
+    walls[2].height = harness.collisionMargin
+    walls[2].body = love.physics.newBody(world, harness.startPoint.x + harness.center, harness.startPoint.y + harness.width - rectCenter)
+    walls[2].shape = love.physics.newRectangleShape(walls[2].width, walls[2].height)
     walls[2].fixture = love.physics.newFixture(walls[2].body, walls[2].shape)
   end
 
@@ -91,58 +143,74 @@ function createThreeWayWalls(world, harness, rotDeg)
 
   if (rotDeg == 0) then
     local wall = {}
-    wall.body = love.physics.newBody(world, harness.center, rectCenter)
-    wall.shape = love.physics.newRectangleShape(harness.width, harness.collisionMargin)
+    wall.width = harness.width
+    wall.height = harness.collisionMargin
+    wall.body = love.physics.newBody(world, harness.startPoint.x + harness.center, harness.startPoint.y + rectCenter)
+    wall.shape = love.physics.newRectangleShape(wall.width, wall.height)
     wall.fixture = love.physics.newFixture(wall.body, wall.shape)
     table.insert(walls, wall)
   elseif (rotDeg == 180) then
     local wall = {}
-    wall.body = love.physics.newBody(world, harness.center, harness.width - rectCenter)
-    wall.shape = love.physics.newRectangleShape(harness.width, harness.collisionMargin)
+    wall.width = harness.width
+    wall.height = harness.collisionMargin
+    wall.body = love.physics.newBody(world, harness.startPoint.x + harness.center, harness.startPoint.y + harness.width - rectCenter)
+    wall.shape = love.physics.newRectangleShape(wall.width, wall.height)
     wall.fixture = love.physics.newFixture(wall.body, wall.shape)
     table.insert(walls, wall)
   elseif (rotDeg == 90) then
     local wall = {}
-    wall.body = love.physics.newBody(world, harness.width - rectCenter, harness.center)
-    wall.shape = love.physics.newRectangleShape(harness.collisionMargin, harness.width)
+    wall.width = harness.collisionMargin
+    wall.height = harness.width
+    wall.body = love.physics.newBody(world, harness.startPoint.x + harness.width - rectCenter, harness.startPoint.y + harness.center)
+    wall.shape = love.physics.newRectangleShape(wall.width, wall.height)
     wall.fixture = love.physics.newFixture(wall.body, wall.shape)
     table.insert(walls, wall)
   else
     local wall = {}
-    wall.body = love.physics.newBody(world, rectCenter, harness.center)
-    wall.shape = love.physics.newRectangleShape(harness.collisionMargin, harness.width)
+    wall.width = harness.collisionMargin
+    wall.height = harness.width
+    wall.body = love.physics.newBody(world, harness.startPoint.x + rectCenter, harness.startPoint.y + harness.center)
+    wall.shape = love.physics.newRectangleShape(wall.width, wall.height)
     wall.fixture = love.physics.newFixture(wall.body, wall.shape)
     table.insert(walls, wall)
   end
 
   if (rotDeg == 0 or rotDeg == 90) then
     local wall = {}
-    wall.body = love.physics.newBody(world, rectCenter, harness.width - rectCenter)
-    wall.shape = love.physics.newRectangleShape(harness.collisionMargin, harness.collisionMargin)
+    wall.width = harness.collisionMargin
+    wall.height = harness.collisionMargin
+    wall.body = love.physics.newBody(world, harness.startPoint.x + rectCenter, harness.startPoint.y + harness.width - rectCenter)
+    wall.shape = love.physics.newRectangleShape(wall.width, wall.height)
     wall.fixture = love.physics.newFixture(wall.body, wall.shape)
     table.insert(walls, wall)
   end
 
   if (rotDeg == 180 or rotDeg == 270) then
     local wall = {}
-    wall.body = love.physics.newBody(world, harness.width - rectCenter, rectCenter)
-    wall.shape = love.physics.newRectangleShape(harness.collisionMargin, harness.collisionMargin)
+    wall.width = harness.collisionMargin
+    wall.height = harness.collisionMargin
+    wall.body = love.physics.newBody(world, harness.startPoint.x + harness.width - rectCenter, harness.startPoint.y + rectCenter)
+    wall.shape = love.physics.newRectangleShape(wall.width, wall.height)
     wall.fixture = love.physics.newFixture(wall.body, wall.shape)
     table.insert(walls, wall)
   end
 
   if (rotDeg == 0 or rotDeg == 270) then
     local wall = {}
-    wall.body = love.physics.newBody(world, harness.width - rectCenter, harness.width - rectCenter)
-    wall.shape = love.physics.newRectangleShape(harness.collisionMargin, harness.collisionMargin)
+    wall.width = harness.collisionMargin
+    wall.height = harness.collisionMargin
+    wall.body = love.physics.newBody(world, harness.startPoint.x + harness.width - rectCenter, harness.startPoint.y + harness.width - rectCenter)
+    wall.shape = love.physics.newRectangleShape(wall.width, wall.height)
     wall.fixture = love.physics.newFixture(wall.body, wall.shape)
     table.insert(walls, wall)
   end
 
   if (rotDeg == 90 or rotDeg == 180) then
     local wall = {}
-    wall.body = love.physics.newBody(world, rectCenter, rectCenter)
-    wall.shape = love.physics.newRectangleShape(harness.collisionMargin, harness.collisionMargin)
+    wall.width = harness.collisionMargin
+    wall.height = harness.collisionMargin
+    wall.body = love.physics.newBody(world, harness.startPoint.x + rectCenter, harness.startPoint.y + rectCenter)
+    wall.shape = love.physics.newRectangleShape(wall.width, wall.height)
     wall.fixture = love.physics.newFixture(wall.body, wall.shape)
     table.insert(walls, wall)
   end
@@ -154,18 +222,23 @@ function createFourWayWalls(world, harness, rotDeg)
   local rectCenter = harness.collisionMargin / 2
   local walls = { {}, {}, {}, {} }
 
-  walls[1].body = love.physics.newBody(world, rectCenter, rectCenter)
+  for i=1,4 do
+    walls[i].width = harness.collisionMargin
+    walls[i].height = harness.collisionMargin
+  end
+
+  walls[1].body = love.physics.newBody(world, harness.startPoint.x + rectCenter, harness.startPoint.y + rectCenter)
   walls[1].shape = love.physics.newRectangleShape(harness.collisionMargin, harness.collisionMargin)
-  walls[1].fixture = love.physics.newFixture(walls[1].body, walls[1].shape)
-  walls[2].body = love.physics.newBody(world, harness.width - rectCenter, rectCenter)
+  walls[2].body = love.physics.newBody(world, harness.startPoint.x + harness.width - rectCenter, harness.startPoint.y + rectCenter)
   walls[2].shape = love.physics.newRectangleShape(harness.collisionMargin, harness.collisionMargin)
-  walls[2].fixture = love.physics.newFixture(walls[2].body, walls[2].shape)
-  walls[3].body = love.physics.newBody(world, rectCenter, harness.width - rectCenter)
+  walls[3].body = love.physics.newBody(world, harness.startPoint.x + rectCenter, harness.startPoint.y + harness.width - rectCenter)
   walls[3].shape = love.physics.newRectangleShape(harness.collisionMargin, harness.collisionMargin)
-  walls[3].fixture = love.physics.newFixture(walls[3].body, walls[3].shape)
-  walls[4].body = love.physics.newBody(world, harness.width - rectCenter, harness.width - rectCenter)
+  walls[4].body = love.physics.newBody(world, harness.startPoint.x + harness.width - rectCenter, harness.startPoint.y + harness.width - rectCenter)
   walls[4].shape = love.physics.newRectangleShape(harness.collisionMargin, harness.collisionMargin)
-  walls[4].fixture = love.physics.newFixture(walls[4].body, walls[4].shape)
+
+  for i=1,4 do
+    walls[i].fixture = love.physics.newFixture(walls[i].body, walls[i].shape)
+  end
 
   return walls
 end
