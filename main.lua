@@ -4,13 +4,13 @@ function love.load(arg)
 
   world = love.physics.newWorld(0, 0)
 
-  initializeBoard()
+  initializeBoard(world)
   initializePlayer()
 end
 
 function love.update(dt)
   world:update(dt)
-  
+
   updatePlayer(dt)
 end
 
