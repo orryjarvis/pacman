@@ -1,13 +1,18 @@
 player = {}
 lengthOfAnimationState = 0.25
+playerToPathRatio = 0.85
 function initializePlayer()
   player.speed = 180
-  player.x = 100
-  player.y = 100
   player.animationState = 0
   player.direction = 0
   player.dt = 0
-  player.size = math.min(love.graphics.getWidth() / numCols, love.graphics.getHeight() / numRows) * 0.3
+  local cellWidth = math.min(love.graphics.getWidth() / numCols, love.graphics.getHeight() / numRows)
+  local cellHalf = cellWidth / 2
+  local collisionMargin = cellHalf - cellHalf * pathWidthRatio + lineWidth
+  player.collisionSize = cellWidth - 2 * collisionMargin
+  player.drawSize = player.collisionSize * playerToPathRatio
+  player.x = cellHalf
+  player.y = cellHalf
 end
 
 function updatePlayer(dt)
@@ -54,10 +59,10 @@ function drawPlayer()
   local halfOpen = open / 2
   love.graphics.setColor(1, 1, 0, 1)
   if player.animationState == 0 then
-  love.graphics.circle("fill", player.x, player.y, player.size / 2)
+  love.graphics.circle("fill", player.x, player.y, player.drawSize / 2)
   elseif player.animationState == 1 or player.animationState == 3 then
-    love.graphics.arc("fill", "pie", player.x, player.y, player.size / 2, facing + halfOpen, 2* math.pi + facing - halfOpen)
+    love.graphics.arc("fill", "pie", player.x, player.y, player.drawSize / 2, facing + halfOpen, 2* math.pi + facing - halfOpen)
   elseif player.animationState == 2 then
-   love.graphics.arc("fill", "pie", player.x, player.y, player.size / 2, facing + open, 2* math.pi + facing - open)
+   love.graphics.arc("fill", "pie", player.x, player.y, player.drawSize / 2, facing + open, 2* math.pi + facing - open)
  end
 end
