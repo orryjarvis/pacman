@@ -86,7 +86,68 @@ function createCorridorWalls(world, harness, rotDeg)
 end
 
 function createThreeWayWalls(world, harness, rotDeg)
-  return {}
+  local rectCenter = harness.collisionMargin / 2
+  local walls = {}
+
+  if (rotDeg == 0) then
+    local wall = {}
+    wall.body = love.physics.newBody(world, harness.center, rectCenter)
+    wall.shape = love.physics.newRectangleShape(harness.width, harness.collisionMargin)
+    wall.fixture = love.physics.newFixture(wall.body, wall.shape)
+    table.insert(walls, wall)
+  elseif (rotDeg == 180) then
+    local wall = {}
+    wall.body = love.physics.newBody(world, harness.center, harness.width - rectCenter)
+    wall.shape = love.physics.newRectangleShape(harness.width, harness.collisionMargin)
+    wall.fixture = love.physics.newFixture(wall.body, wall.shape)
+    table.insert(walls, wall)
+  elseif (rotDeg == 90) then
+    local wall = {}
+    wall.body = love.physics.newBody(world, harness.width - rectCenter, harness.center)
+    wall.shape = love.physics.newRectangleShape(harness.collisionMargin, harness.width)
+    wall.fixture = love.physics.newFixture(wall.body, wall.shape)
+    table.insert(walls, wall)
+  else
+    local wall = {}
+    wall.body = love.physics.newBody(world, rectCenter, harness.center)
+    wall.shape = love.physics.newRectangleShape(harness.collisionMargin, harness.width)
+    wall.fixture = love.physics.newFixture(wall.body, wall.shape)
+    table.insert(walls, wall)
+  end
+
+  if (rotDeg == 0 or rotDeg == 90) then
+    local wall = {}
+    wall.body = love.physics.newBody(world, rectCenter, harness.width - rectCenter)
+    wall.shape = love.physics.newRectangleShape(harness.collisionMargin, harness.collisionMargin)
+    wall.fixture = love.physics.newFixture(wall.body, wall.shape)
+    table.insert(walls, wall)
+  end
+
+  if (rotDeg == 180 or rotDeg == 270) then
+    local wall = {}
+    wall.body = love.physics.newBody(world, harness.width - rectCenter, rectCenter)
+    wall.shape = love.physics.newRectangleShape(harness.collisionMargin, harness.collisionMargin)
+    wall.fixture = love.physics.newFixture(wall.body, wall.shape)
+    table.insert(walls, wall)
+  end
+
+  if (rotDeg == 0 or rotDeg == 270) then
+    local wall = {}
+    wall.body = love.physics.newBody(world, harness.width - rectCenter, harness.width - rectCenter)
+    wall.shape = love.physics.newRectangleShape(harness.collisionMargin, harness.collisionMargin)
+    wall.fixture = love.physics.newFixture(wall.body, wall.shape)
+    table.insert(walls, wall)
+  end
+
+  if (rotDeg == 90 or rotDeg == 180) then
+    local wall = {}
+    wall.body = love.physics.newBody(world, rectCenter, rectCenter)
+    wall.shape = love.physics.newRectangleShape(harness.collisionMargin, harness.collisionMargin)
+    wall.fixture = love.physics.newFixture(wall.body, wall.shape)
+    table.insert(walls, wall)
+  end
+
+  return walls
 end
 
 function createFourWayWalls(world, harness, rotDeg)
