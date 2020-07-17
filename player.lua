@@ -48,8 +48,6 @@ function updatePlayer(dt)
 end
 
 function drawPlayer()
-  love.graphics.newFont(40)
-  love.graphics.printf("" .. player.dt, 0, 0, love.graphics.getWidth(), "center")
   love.graphics.setLineWidth(0)
   local facing = math.pi * player.direction / 2
   local open = math.pi / 4
