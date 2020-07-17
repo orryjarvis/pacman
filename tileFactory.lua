@@ -8,52 +8,97 @@ smallCornerRatio = 0.1
 doubleLineGapRatio = 0.1
 wallColor = {0.13, 0.13, 0.87, 1}
 
-function createTile(type, row, col, width, rotDeg, wallTypes)
+function createTile(world, type, row, col, width, rotDeg, wallTypes)
   local rendererMap = { function() end, renderCorner, renderCorridor, renderThreeWay, renderFourWay }
+  local wallGeneratorMap = { function() return {} end, createCornerWalls, createCorridorWalls, createThreeWayWalls, createFourWayWalls }
   local rotRad = rotDeg * math.pi / 180
+  local harness = getDataHarness(row, col, width, wallTypes)
 
   local tile = {}
   tile.rotation = rotRad
   tile.type = type
-  tile.draw = getRenderer(row, col, width, rotRad, wallTypes, rendererMap[type])
+  tile.draw = getRenderer(harness, rotRad, rendererMap[type])
+  tile.walls = wallGeneratorMap[type](harness, rotDeg)
 
   return tile
 end
 
-function getRenderer(row, col, width, rotation, wallTypes, renderer)
-  return function ()
-    local center = width / 2
-    local startPoint = { x = (col - 1) * width, y = (row - 1) * width }
-    local lineOffset = lineWidth / 2
-    local marginTopLeft = center - center * pathWidthRatio + lineOffset
-    local marginBottomRight = width - marginTopLeft
-    local largeCornerRadius = width * largeCornerRatio
-    local smallCornerRadius = width * smallCornerRatio
-    local doubleLineGap = width * doubleLineGapRatio
-    local harness = {
-      width = width,
-      largeCornerRadius = largeCornerRadius,
-      smallCornerRadius = smallCornerRadius,
-      doubleLineGap = doubleLineGap,
-      marginTopLeft = marginTopLeft,
-      marginBottomRight = marginBottomRight,
-      wallTypes = wallTypes
-    }
+function createCornerWalls(harness, rotDeg)
+  local walls = {}
+  local rectCenter = harness.collisionMargin / 2
 
+  if (rotDeg == 0 or rotDeg == 90) then
+    table.insert(walls, love.physics.newRectangleShape(harness.width, harness.collisionMargin, harness.center, rectCenter))
+  end
+
+  if (rotDeg == 180 or rotDeg == 270) then
+    table.insert(walls, love.physics.newRectangleShape(harness.width, harness.collisionMargin, harness.center, harness.width - rectCenter))
+  end
+
+  if (rotDeg == 0 or rotDeg == 270) then
+    table.insert(walls, love.physics.newRectangleShape(harness.collisionMargin, harness.width, rectCenter, harness.center))
+  end
+
+  if (rotDeg == 90 or rotDeg == 180) then
+    table.insert(walls, love.physics.newRectangleShape(harness.collisionMargin, harness.width, harness.width - rectCenter, harness.center))
+  end
+
+  return walls
+end
+
+function createCorridorWalls()
+  return {}
+end
+
+function createThreeWayWalls()
+  return {}
+end
+
+function createFourWayWalls()
+  return {}
+end
+
+function getDataHarness(row, col, width, wallTypes)
+  local center = width / 2
+  local startPoint = { x = (col - 1) * width, y = (row - 1) * width }
+  local lineOffset = lineWidth / 2
+  local collisionMargin = center - center * pathWidthRatio + lineWidth
+  local marginTopLeft = center - center * pathWidthRatio + lineOffset
+  local marginBottomRight = width - marginTopLeft
+  local largeCornerRadius = width * largeCornerRatio
+  local smallCornerRadius = width * smallCornerRatio
+  local doubleLineGap = width * doubleLineGapRatio
+
+  return {
+    width = width,
+    center = center,
+    startPoint = startPoint,
+    largeCornerRadius = largeCornerRadius,
+    smallCornerRadius = smallCornerRadius,
+    doubleLineGap = doubleLineGap,
+    marginTopLeft = marginTopLeft,
+    marginBottomRight = marginBottomRight,
+    collisionMargin = collisionMargin,
+    wallTypes = wallTypes,
+  }
+end
+
+function getRenderer(harness, rotation, renderer)
+  return function ()
     love.graphics.setLineWidth(lineWidth)
     love.graphics.setColor(wallColor)
 
-    love.graphics.translate(startPoint.x, startPoint.y)
-    love.graphics.translate(center, center)
+    love.graphics.translate(harness.startPoint.x, harness.startPoint.y)
+    love.graphics.translate(harness.center, harness.center)
     love.graphics.rotate(rotation)
-    love.graphics.translate(-center, -center)
+    love.graphics.translate(-harness.center, -harness.center)
 
-    renderer(harness)
+    renderer(harness, wallTypes)
 
-    love.graphics.translate(center, center)
+    love.graphics.translate(harness.center, harness.center)
     love.graphics.rotate(-rotation)
-    love.graphics.translate(-center, -center)
-    love.graphics.translate(-startPoint.x, -startPoint.y)
+    love.graphics.translate(-harness.center, -harness.center)
+    love.graphics.translate(-harness.startPoint.x, -harness.startPoint.y)
   end
 end
 
